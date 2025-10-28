@@ -730,7 +730,8 @@
       function drawSpaceship() {
         ctx.save();
         ctx.translate(spaceship.x, spaceship.y);
-        ctx.rotate(spaceship.rotation);
+        // Rotate 45 degrees (π/4 radians) clockwise to match movement direction
+        ctx.rotate(spaceship.rotation + Math.PI / 4);
 
         // Add flashing effect when invincible
         if (invincible) {
