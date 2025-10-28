@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            z-index: 10;
+            padding: 20px;
+            position: relative;
+        }
+
+        .astronaut {
+            font-size: 120px;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(100, 200, 255, 0.8);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 30px rgba(100, 200, 255, 0.6); }
+            50% { text-shadow: 0 0 50px rgba(100, 200, 255, 1); }
+        }
+
+        h1 {
+            font-size: 32px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 15px 0;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .dev-reminder {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 500px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reminder-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .checklist {
+            text-align: left;
+            display: inline-block;
+        }
+
+        .check-item {
+            margin: 10px 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #64b5f6;
+            font-size: 14px;
+        }
+
+        .game-hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 100;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            display: none;
+        }
+
+        .game-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            z-index: 200;
+            display: none;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .mobile-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: none;
+        }
+
+        .controls-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+        }
+
+        .dpad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 5px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s;
+            touch-action: none;
+        }
+
+        .control-btn:active {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0.95);
+        }
+
+        .fire-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 100, 100, 0.3);
+            border: 2px solid rgba(255, 100, 100, 0.5);
+            border-radius: 50%;
+            font-size: 32px;
+        }
+
+        .fire-btn:active {
+            background: rgba(255, 100, 100, 0.5);
+        }
+
+        .start-instruction {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            z-index: 150;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="stars" id="stars"></div>
+
+    <div class="container" id="welcomeScreen">
+        <div class="astronaut">👨‍🚀</div>
+        <div class="error-code">404</div>
+        <h1>Oops! You're Lost in Space</h1>
+        <p>The page you're looking for has drifted away into the cosmos.</p>
+        <p>Don't worry, even astronauts get lost sometimes! 🌙</p>
+        
+        <div class="dev-reminder">
+            <div class="reminder-title">🎮 Easter Egg Unlocked!</div>
+            <div class="checklist">
+                <div class="check-item">✓ Use WASD or Arrow Keys to fly</div>
+                <div class="check-item">✓ Press SPACE to shoot</div>
+                <div class="check-item">✓ Destroy all space objects to win!</div>
+                <div class="check-item">✓ Avoid collisions or it's GAME OVER</div>
+            </div>
+        </div>
+        
+        <a href="/" class="btn">Take Me Home 🚀</a>
+    </div>
+
+    <div class="game-hud" id="gameHud">
+        Score: <span id="score">0</span> | Targets: <span id="targets">0</span>
+    </div>
+
+    <div class="game-message" id="gameMessage"></div>
+
+    <div class="start-instruction" id="startInstruction">
+        Press any control to start the game!<br>
+        <small style="font-size: 16px; opacity: 0.8; margin-top: 10px; display: block;">
+            WASD/Arrows to move | SPACE to shoot
+        </small>
+    </div>
+
+    <div class="mobile-controls" id="mobileControls">
+        <div class="controls-wrapper">
+            <div class="dpad">
+                <div></div>
+                <div class="control-btn" data-key="up">▲</div>
+                <div></div>
+                <div class="control-btn" data-key="left">◀</div>
+                <div></div>
+                <div class="control-btn" data-key="right">▶</div>
+                <div></div>
+                <div class="control-btn" data-key="down">▼</div>
+                <div></div>
+            </div>
+            <div class="control-btn fire-btn" data-key="fire">🔥</div>
+        </div>
+    </div>
+
+    <script>
+        // Generate random stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Game setup
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const emojiCache = {};
+        const emojis = ['🛸', '🌙', '⭐', '🪐', '☄️', '🚀', '🛰️', '👽', '🌟', '💫'];
+        const objects = [];
+        const bullets = [];
+        let gameStarted = false;
+        let gameOver = false;
+        let gameWon = false;
+        let score = 0;
+
+        // Spaceship
+        const spaceship = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            vx: 0,
+            vy: 0,
+            rotation: 0,
+            size: 40,
+            acceleration: 0.5,
+            friction: 0.98,
+            maxSpeed: 8
+        };
+
+        // Input handling
+        const keys = {};
+        const touchKeys = {};
+
+        window.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            if (!gameStarted && !gameOver && (e.key === ' ' || e.key.toLowerCase() === 'w' || e.key.toLowerCase() === 'a' || e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'd' || e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+                startGame();
+            }
+            if (e.key === ' ' && gameStarted && !gameOver && !gameWon) {
+                e.preventDefault();
+                shoot();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
+
+        // Mobile controls
+        const controlBtns = document.querySelectorAll('.control-btn');
+        controlBtns.forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const key = btn.dataset.key;
+                touchKeys[key] = true;
+                
+                if (!gameStarted && !gameOver) {
+                    startGame();
+                }
+                
+                if (key === 'fire' && gameStarted && !gameOver && !gameWon) {
+                    shoot();
+                }
+            });
+
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const key = btn.dataset.key;
+                touchKeys[key] = false;
+            });
+        });
+
+        function startGame() {
+            gameStarted = true;
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('startInstruction').style.display = 'none';
+            document.getElementById('gameHud').style.display = 'block';
+            document.getElementById('mobileControls').style.display = 'block';
+            document.getElementById('targets').textContent = objects.length;
+        }
+
+        function shoot() {
+            bullets.push({
+                x: spaceship.x,
+                y: spaceship.y,
+                vx: Math.cos(spaceship.rotation) * 10,
+                vy: Math.sin(spaceship.rotation) * 10,
+                life: 100
+            });
+        }
+
+        function showMessage(text, color = 'white') {
+            const msg = document.getElementById('gameMessage');
+            msg.textContent = text;
+            msg.style.color = color;
+            msg.style.display = 'block';
+        }
+
+        function hideMessage() {
+            document.getElementById('gameMessage').style.display = 'none';
+        }
+
+        class SpaceObject {
+            constructor() {
+                this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                this.x = 0;
+                this.y = 0;
+                this.vx = 0;
+                this.vy = 0;
+                this.size = 30 + Math.random() * 30;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+            }
+
+            update() {
+                if (!gameStarted || gameOver || gameWon) {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.rotation += this.rotationSpeed;
+
+                    if (this.x < 0 || this.x > canvas.width) {
+                        this.vx *= -1;
+                        this.x = Math.max(0, Math.min(canvas.width, this.x));
+                    }
+                    if (this.y < 0 || this.y > canvas.height) {
+                        this.vy *= -1;
+                        this.y = Math.max(0, Math.min(canvas.height, this.y));
+                    }
+                } else {
+                    // During game, objects move slower and more menacingly
+                    this.x += this.vx * 0.5;
+                    this.y += this.vy * 0.5;
+                    this.rotation += this.rotationSpeed;
+
+                    if (this.x < 0 || this.x > canvas.width) {
+                        this.vx *= -1;
+                        this.x = Math.max(0, Math.min(canvas.width, this.x));
+                    }
+                    if (this.y < 0 || this.y > canvas.height) {
+                        this.vy *= -1;
+                        this.y = Math.max(0, Math.min(canvas.height, this.y));
+                    }
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                
+                const cacheKey = `${this.emoji}_${this.size}`;
+                if (!emojiCache[cacheKey]) {
+                    const tempCanvas = document.createElement('canvas');
+                    const tempSize = this.size * 2;
+                    tempCanvas.width = tempSize;
+                    tempCanvas.height = tempSize;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.font = `${this.size}px Arial`;
+                    tempCtx.textAlign = 'center';
+                    tempCtx.textBaseline = 'middle';
+                    tempCtx.shadowBlur = 15;
+                    tempCtx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                    tempCtx.fillText(this.emoji, tempSize / 2, tempSize / 2);
+                    emojiCache[cacheKey] = tempCanvas;
+                }
+                
+                const cached = emojiCache[cacheKey];
+                ctx.drawImage(cached, -cached.width / 2, -cached.height / 2);
+                ctx.restore();
+            }
+
+            distanceTo(x, y) {
+                const dx = this.x - x;
+                const dy = this.y - y;
+                return Math.sqrt(dx * dx + dy * dy);
+            }
+        }
+
+        function createSpacedObjects(count) {
+            const gridSize = Math.ceil(Math.sqrt(count));
+            const cellWidth = canvas.width / gridSize;
+            const cellHeight = canvas.height / gridSize;
+            
+            for (let i = 0; i < count; i++) {
+                let attempts = 0;
+                let obj;
+                let tooClose = true;
+                
+                while (tooClose && attempts < 50) {
+                    const gridX = (i % gridSize);
+                    const gridY = Math.floor(i / gridSize);
+                    
+                    obj = new SpaceObject();
+                    obj.x = gridX * cellWidth + Math.random() * cellWidth;
+                    obj.y = gridY * cellHeight + Math.random() * cellHeight;
+                    
+                    const angle = (i * 2.4 + Math.random() * 0.5) % (Math.PI * 2);
+                    const speed = 1 + Math.random() * 1.5;
+                    obj.vx = Math.cos(angle) * speed;
+                    obj.vy = Math.sin(angle) * speed;
+                    
+                    tooClose = false;
+                    
+                    // Check distance from spaceship
+                    const distToShip = obj.distanceTo(spaceship.x, spaceship.y);
+                    if (distToShip < 150) {
+                        tooClose = true;
+                    }
+                    
+                    for (let existing of objects) {
+                        const distance = obj.distanceTo(existing.x, existing.y);
+                        const minDistance = (obj.size + existing.size) / 2 + 50;
+                        if (distance < minDistance) {
+                            tooClose = true;
+                            break;
+                        }
+                    }
+                    
+                    attempts++;
+                }
+                
+                if (obj) {
+                    objects.push(obj);
+                }
+            }
+        }
+        
+        createSpacedObjects(15);
+
+        function updateSpaceship() {
+            if (!gameStarted || gameOver || gameWon) return;
+
+            // Handle input
+            const isUp = keys['w'] || keys['arrowup'] || touchKeys['up'];
+            const isDown = keys['s'] || keys['arrowdown'] || touchKeys['down'];
+            const isLeft = keys['a'] || keys['arrowleft'] || touchKeys['left'];
+            const isRight = keys['d'] || keys['arrowright'] || touchKeys['right'];
+
+            if (isUp) {
+                spaceship.vx += Math.cos(spaceship.rotation) * spaceship.acceleration;
+                spaceship.vy += Math.sin(spaceship.rotation) * spaceship.acceleration;
+            }
+            if (isDown) {
+                spaceship.vx -= Math.cos(spaceship.rotation) * spaceship.acceleration * 0.5;
+                spaceship.vy -= Math.sin(spaceship.rotation) * spaceship.acceleration * 0.5;
+            }
+            if (isLeft) {
+                spaceship.rotation -= 0.1;
+            }
+            if (isRight) {
+                spaceship.rotation += 0.1;
+            }
+
+            // Apply friction
+            spaceship.vx *= spaceship.friction;
+            spaceship.vy *= spaceship.friction;
+
+            // Limit speed
+            const speed = Math.sqrt(spaceship.vx * spaceship.vx + spaceship.vy * spaceship.vy);
+            if (speed > spaceship.maxSpeed) {
+                spaceship.vx = (spaceship.vx / speed) * spaceship.maxSpeed;
+                spaceship.vy = (spaceship.vy / speed) * spaceship.maxSpeed;
+            }
+
+            // Update position
+            spaceship.x += spaceship.vx;
+            spaceship.y += spaceship.vy;
+
+            // Wrap around screen
+            if (spaceship.x < 0) spaceship.x = canvas.width;
+            if (spaceship.x > canvas.width) spaceship.x = 0;
+            if (spaceship.y < 0) spaceship.y = canvas.height;
+            if (spaceship.y > canvas.height) spaceship.y = 0;
+        }
+
+        function drawSpaceship() {
+            ctx.save();
+            ctx.translate(spaceship.x, spaceship.y);
+            ctx.rotate(spaceship.rotation);
+            
+            ctx.font = `${spaceship.size}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = 'rgba(100, 200, 255, 0.8)';
+            ctx.fillText('🚀', 0, 0);
+            
+            ctx.restore();
+        }
+
+        function updateBullets() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const bullet = bullets[i];
+                bullet.x += bullet.vx;
+                bullet.y += bullet.vy;
+                bullet.life--;
+
+                if (bullet.life <= 0 || bullet.x < 0 || bullet.x > canvas.width || bullet.y < 0 || bullet.y > canvas.height) {
+                    bullets.splice(i, 1);
+                }
+            }
+        }
+
+        function drawBullets() {
+            ctx.fillStyle = '#00ffff';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00ffff';
+            
+            bullets.forEach(bullet => {
+                ctx.beginPath();
+                ctx.arc(bullet.x, bullet.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            ctx.shadowBlur = 0;
+        }
+
+        function checkCollisions() {
+            if (!gameStarted || gameOver || gameWon) return;
+
+            // Check bullet-object collisions
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const bullet = bullets[i];
+                for (let j = objects.length - 1; j >= 0; j--) {
+                    const obj = objects[j];
+                    const dist = obj.distanceTo(bullet.x, bullet.y);
+                    if (dist < obj.size / 2) {
+                        bullets.splice(i, 1);
+                        objects.splice(j, 1);
+                        score += 100;
+                        document.getElementById('score').textContent = score;
+                        document.getElementById('targets').textContent = objects.length;
+                        
+                        if (objects.length === 0) {
+                            gameWon = true;
+                            showMessage('CONGRATULATIONS! 🎉', '#00ff00');
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Check spaceship-object collisions
+            for (let obj of objects) {
+                const dist = obj.distanceTo(spaceship.x, spaceship.y);
+                if (dist < (obj.size + spaceship.size) / 2) {
+                    gameOver = true;
+                    showMessage('GAME OVER 💥', '#ff0000');
+                }
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            objects.forEach(obj => {
+                obj.update();
+                obj.draw();
+            });
+
+            if (gameStarted) {
+                updateSpaceship();
+                drawSpaceship();
+                updateBullets();
+                drawBullets();
+                checkCollisions();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                for (let key in emojiCache) {
+                    delete emojiCache[key];
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>
