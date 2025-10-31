@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      # Mount the workspace
+      - ..:/workspaces/space-shooter-404:cached
+
+      # Mount dist to host - artifacts immediately available on host!
+      - ../dist:/workspaces/space-shooter-404/dist
+
+      # Named volume for node_modules - improves performance
+      - node-modules:/workspaces/space-shooter-404/node_modules
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Forward port 3000 for Vite dev server
+    ports:
+      - "3000:3000"
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+    # Set environment variables
+    environment:
+      - NODE_ENV=development
+
+    # Run as node user for security
+    user: node
+
+    # Keep container running
+    stdin_open: true
+    tty: true
+
+volumes:
+  # Named volume for node_modules - improves performance
+  node-modules:
+    driver: local

@@ -1,0 +1,164 @@
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Stars Background */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+/* Welcome Screen */
+.container {
+  text-align: center;
+  color: white;
+  z-index: 10;
+  padding: 20px;
+  position: relative;
+}
+
+.astronaut {
+  font-size: 120px;
+  animation: float 3s ease-in-out infinite;
+  display: inline-block;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+}
+
+.error-code {
+  font-size: 120px;
+  font-weight: bold;
+  margin: 20px 0;
+  text-shadow: 0 0 30px rgba(100, 200, 255, 0.8);
+  animation: glow 2s ease-in-out infinite;
+}
+
+h1 {
+  font-size: 32px;
+  margin: 20px 0;
+  font-weight: 600;
+}
+
+p {
+  font-size: 18px;
+  margin: 15px 0;
+  opacity: 0.9;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+}
+
+/* Dev Reminder Box */
+.dev-reminder {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 30px auto;
+  max-width: 500px;
+  animation: fadeIn 1s ease-in;
+}
+
+.reminder-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.checklist {
+  text-align: left;
+  display: inline-block;
+}
+
+.check-item {
+  margin: 10px 0;
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+code {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-family: 'Courier New', monospace;
+  color: #64b5f6;
+  font-size: 14px;
+}
+
+.start-instruction {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  z-index: 150;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .mobile-controls {
+    display: block;
+  }
+}

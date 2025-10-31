@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="/styles/animations.css" />
+    <link rel="stylesheet" href="/styles/game.css" />
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <div class="stars" id="stars"></div>
+
+    <div class="container" id="welcomeScreen">
+      <div class="astronaut">👨‍🚀</div>
+      <div class="error-code">404</div>
+      <h1>Oops! You're Lost in Space</h1>
+      <p>The page you're looking for has drifted away into the cosmos.</p>
+      <p>Don't worry, even astronauts get lost sometimes! 🌙</p>
+
+      <div class="dev-reminder">
+        <div class="reminder-title">🎮 Easter Egg Unlocked!</div>
+        <div class="checklist">
+          <div class="check-item">✓ Use WASD or Arrow Keys to fly</div>
+          <div class="check-item">✓ Press SPACE to shoot</div>
+          <div class="check-item">✓ Destroy all space objects to win!</div>
+          <div class="check-item">✓ Avoid collisions or it's GAME OVER</div>
+        </div>
+      </div>
+
+      <a href="/" class="btn">Take Me Home 🚀</a>
+    </div>
+
+    <div class="game-hud" id="gameHud">
+      Score: <span id="score">0</span> | Targets: <span id="targets">0</span>
+    </div>
+
+    <div class="game-message" id="gameMessage">
+      <div id="gameMessageText"></div>
+      <button class="restart-btn" id="restartBtn" style="display: none">Play Again 🔄</button>
+      <div class="restart-hint" id="restartHint" style="display: none">or press ENTER</div>
+    </div>
+
+    <div class="start-instruction" id="startInstruction">
+      Press any control to start the game!<br />
+      <small style="font-size: 16px; opacity: 0.8; margin-top: 10px; display: block">
+        WASD/Arrows to move | SPACE to shoot
+      </small>
+    </div>
+
+    <div class="mobile-controls" id="mobileControls">
+      <div class="controls-wrapper">
+        <div class="dpad">
+          <div></div>
+          <div class="control-btn" data-key="up">▲</div>
+          <div></div>
+          <div class="control-btn" data-key="left">◀</div>
+          <div></div>
+          <div class="control-btn" data-key="right">▶</div>
+          <div></div>
+          <div class="control-btn" data-key="down">▼</div>
+          <div></div>
+        </div>
+        <div class="control-btn fire-btn" data-key="fire">🔥</div>
+      </div>
+    </div>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>

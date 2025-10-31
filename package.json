@@ -1,0 +1,28 @@
+{
+  "name": "space-shooter-404",
+  "version": "1.0.0",
+  "description": "An interactive 404 space shooter game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:all": "concurrently \"npm run dev\" \"npm run watch:404\"",
+    "watch:404": "node scripts/watch-404.js",
+    "build": "vite build && node scripts/post-build.js",
+    "preview": "vite preview",
+    "lint": "eslint src --ext js,ts --fix"
+  },
+  "keywords": [
+    "404",
+    "space-shooter",
+    "game",
+    "canvas"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "eslint": "^8.56.0",
+    "chokidar": "^3.5.3",
+    "concurrently": "^8.2.2"
+  }
+}

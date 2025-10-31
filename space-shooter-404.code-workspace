@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "files.exclude": {
+      "node_modules": true,
+      "dist": false
+    },
+    "search.exclude": {
+      "node_modules": true,
+      "dist": true
+    }
+  }
+}
