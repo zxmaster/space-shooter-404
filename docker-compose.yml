@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # Vite development server
+  space-shooter-dev:
+    image: node:20-alpine
+    container_name: space-shooter-dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - intranet_net
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+
+      # HTTP router for development
+      - "traefik.http.routers.space-shooter-dev.rule=Host(`space-shooter.test`)"
+      - "traefik.http.routers.space-shooter-dev.entrypoints=web"
+      - "traefik.http.routers.space-shooter-dev.service=space-shooter-dev"
+      - "traefik.http.services.space-shooter-dev.loadbalancer.server.port=5173"
+
+      # Optional: HTTPS router (if you have SSL configured)
+      # - "traefik.http.routers.space-shooter-dev-secure.rule=Host(`space-shooter.test`)"
+      # - "traefik.http.routers.space-shooter-dev-secure.entrypoints=websecure"
+      # - "traefik.http.routers.space-shooter-dev-secure.tls=true"
+      # - "traefik.http.routers.space-shooter-dev-secure.service=space-shooter-dev"
+    restart: unless-stopped
+    profiles:
+      - dev
+
+  # Nginx server for production preview
+  space-shooter-prod:
+    image: nginx:alpine
+    container_name: space-shooter-prod
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"
+    networks:
+      - intranet_net
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+
+      # HTTP router for production
+      - "traefik.http.routers.space-shooter-prod.rule=Host(`space-shooter-prod.test`)"
+      - "traefik.http.routers.space-shooter-prod.entrypoints=web"
+      - "traefik.http.routers.space-shooter-prod.service=space-shooter-prod"
+      - "traefik.http.services.space-shooter-prod.loadbalancer.server.port=80"
+
+      # Optional: HTTPS router (if you have SSL configured)
+      # - "traefik.http.routers.space-shooter-prod-secure.rule=Host(`space-shooter-prod.test`)"
+      # - "traefik.http.routers.space-shooter-prod-secure.entrypoints=websecure"
+      # - "traefik.http.routers.space-shooter-prod-secure.tls=true"
+      # - "traefik.http.routers.space-shooter-prod-secure.service=space-shooter-prod"
+    restart: unless-stopped
+    profiles:
+      - prod
+    depends_on:
+      - space-shooter-dev
+
+networks:
+  intranet_net:
+    external: true
+    name: intranet_net

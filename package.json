@@ -9,7 +9,12 @@
     "watch:404": "node scripts/watch-404.js",
     "build": "vite build && node scripts/post-build.js",
     "preview": "vite preview",
-    "lint": "eslint src --ext js,ts --fix"
+    "lint": "eslint src --ext js,ts --fix",
+    "docker:dev": "docker-compose --profile dev up -d",
+    "docker:prod": "docker-compose --profile prod up -d",
+    "docker:all": "docker-compose --profile dev --profile prod up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
   },
   "keywords": [
     "404",

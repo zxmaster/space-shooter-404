@@ -3,3 +3,10 @@ dist
 .DS_Store
 *.log
 .vscode/settings.json
+
+# Environment variables
+.env
+.env.local
+
+# Docker volumes
+docker-volumes/

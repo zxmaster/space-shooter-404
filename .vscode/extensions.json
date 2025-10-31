@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-vscode.live-server",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "firefox-devtools.vscode-firefox-debug",
+    "ms-vscode.js-debug"
+  ],
+  "unwantedRecommendations": []
+}

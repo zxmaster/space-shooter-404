@@ -18,7 +18,14 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
-    open: true,
+    port: 5173,
+    host: '0.0.0.0', // Allow external access (needed for Docker)
+    strictPort: true, // Exit if port is already in use
+    open: false, // Don't auto-open browser (handled by VSCode)
+  },
+  preview: {
+    port: 4173,
+    host: '0.0.0.0',
+    strictPort: true,
   },
 });

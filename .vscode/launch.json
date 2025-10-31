@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Vite Dev Server",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
+      "preLaunchTask": "Start Vite Dev Server",
+      "postDebugTask": "Kill Vite Server",
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
+      "name": "Launch with Live Preview",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
+      "preLaunchTask": "Start Vite Dev Server",
+      "serverReadyAction": {
+        "action": "debugWithEdge",
+        "pattern": "Local:\\s+(https?://[^\\s]+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}/src"
+      },
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
+      "name": "Launch Dev with 404 Watch",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
+      "preLaunchTask": "Start Dev with 404 Watch",
+      "postDebugTask": "Kill Vite Server",
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
+      "name": "Attach to Existing Vite Server",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true
+    },
+    {
+      "name": "Preview Production Build",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4173",
+      "webRoot": "${workspaceFolder}/dist",
+      "preLaunchTask": "Preview Production Build",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "compounds": []
+}
